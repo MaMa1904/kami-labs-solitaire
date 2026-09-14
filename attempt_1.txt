@@ -75,3 +75,102 @@ The percentages must:
 - contain no tabs or trailing spaces.
 
 Please write clean and beginner-readable Python code. Explain the code after writing it.
+
+AI RESPONSE / CODE:
+import random
+
+
+def card_name(card):
+    suits = ["♥", "♦", "♣", "♠"]
+    ranks = ["7", "8", "9", "10", "J", "Q", "K", "A"]
+
+    return ranks[card % 8] + suits[card // 8]
+
+
+def get_suit(card):
+    return card // 8
+
+
+def play_game(seed_value, show_rounds=False):
+    cards = list(range(32))
+
+    random.seed(seed_value)
+    random.shuffle(cards)
+
+    table = [cards.pop(0) for _ in range(4)]
+
+    while True:
+
+        if show_rounds:
+            print()
+            print("    " + " ".join(card_name(card) for card in table))
+
+        suits = [get_suit(card) for card in table]
+
+        suit_positions = {}
+
+        for position, suit in enumerate(suits):
+            if suit not in suit_positions:
+                suit_positions[suit] = []
+
+            suit_positions[suit].append(position)
+
+        remove_positions = set()
+
+        for positions in suit_positions.values():
+
+            if len(positions) == 2:
+                remove_positions.update(positions)
+
+            elif len(positions) == 3:
+                remove_positions.update(positions[:2])
+
+            elif len(positions) == 4:
+                remove_positions.update(positions)
+
+        # If all four suits are present while cards remain,
+        # the game is lost.
+        if len(suit_positions) == 4 and cards:
+            if show_rounds:
+                print("LOSE")
+
+            return len(cards), False
+
+        # If there are no cards left, the game is won.
+        if not cards:
+            if show_rounds:
+                print("WIN")
+
+            return 0, True
+
+        # Remove matching cards.
+        for position in remove_positions:
+            table[position] = None
+
+        # Refill empty positions.
+        for position in range(4):
+            if table[position] is None and cards:
+                table[position] = cards.pop(0)
+
+
+def simulate(n, i):
+    results = {}
+
+    for seed_value in range(i, i + n):
+        cards_left, won = play_game(seed_value)
+
+        results[cards_left] = results.get(cards_left, 0) + 1
+
+    for cards_left in sorted(results):
+        percentage = results[cards_left] / n * 100
+
+        if percentage > 0:
+            print(f"{cards_left} cards left: {percentage:.2f}%")
+
+
+if __name__ == "__main__":
+    seed_value = int(
+        input("Enter an integer to pass to the seed() function: ")
+    )
+
+    play_game(seed_value, show_rounds=True)
