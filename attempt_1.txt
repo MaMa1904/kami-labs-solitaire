@@ -1,3 +1,77 @@
 ATTEMPT 1
 
 PROMPT:
+I need to build a Python program for a card game called solitaire.
+
+There are 32 cards represented by integers 0 to 31.
+
+The cards are arranged like this:
+- 0 to 7 = Hearts
+- 8 to 15 = Diamonds
+- 16 to 23 = Clubs
+- 24 to 31 = Spades
+
+Within each suit, the cards go from Seven to Ace.
+
+For example:
+6 = King of Hearts
+26 = Nine of Spades
+
+The deck should be created using:
+
+cards = list(range(32))
+
+The user will provide an integer seed. Use Python's random module to seed and shuffle the deck. The same seed must always produce the same shuffled deck.
+
+After shuffling, deal the first 4 cards into 4 table positions:
+
+1 2
+3 4
+
+Then repeatedly apply these rules:
+
+1. Look at the suits of the 4 cards on the table.
+2. If exactly 2 cards have the same suit, remove those 2 cards.
+3. If exactly 3 cards have the same suit, remove the 2 cards in the lower-numbered positions.
+4. If there are two pairs of matching suits, remove all 4 cards.
+5. If all 4 cards have the same suit, remove all 4 cards.
+6. Refill empty positions using cards from the remaining deck.
+7. Always fill the lowest-numbered empty position first.
+8. Continue until the game ends.
+
+The game is won if the deck becomes empty.
+
+The game is lost if all 4 suits are present on the table while there are still cards remaining in the deck.
+
+For Part 1, the program should:
+- ask the user for an integer seed
+- shuffle and play one game
+- show the game round by round
+- print a clear WIN or LOSE result
+
+The output must have:
+- no tabs
+- no trailing spaces
+- a blank line before each new round
+- four spaces before each group of 4 cards
+- one space between cards
+- at most 6 groups of 4 cards per line
+
+For Part 2, create a function:
+
+simulate(n, i)
+
+It should play n games using seeds:
+i, i+1, i+2, ..., i+n-1.
+
+For every game, record how many cards were left undealt when the game ended.
+
+Then print the percentage of games that ended with each possible number of cards left.
+
+The percentages must:
+- have exactly two decimal places
+- only show percentages greater than zero
+- be sorted by number of cards left from smallest to largest
+- contain no tabs or trailing spaces.
+
+Please write clean and beginner-readable Python code. Explain the code after writing it.
