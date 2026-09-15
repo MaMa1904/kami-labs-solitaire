@@ -1,0 +1,9 @@
+WRITEUP
+
+I used AI as a coding partner while developing my solitaire program. I started with a basic prompt describing the card representation, game rules, input requirements, and simulation requirements. After testing the first version, I noticed problems with the output formatting and game display. I then used additional prompts to explain the problems I found and asked the AI to revise the program.
+
+Through several iterations, I tested the program with different seeds and checked whether the game continued correctly, whether cards were displayed clearly, and whether the WIN and LOSE conditions were handled correctly. I also tested the required simulation examples to check the percentage calculations and formatting.
+
+The iterative process was useful because the first version was not perfect. Testing the actual program helped me find problems that were not obvious just by reading the code. I learned that giving the AI specific feedback from each test produced better revisions than simply asking it to write the program again. I also learned the importance of testing edge cases and checking output against the assignment requirements.
+
+The final version was tested using the required examples: seeds 6, 3, and 30, as well as simulate(20, 0) and simulate(300, 7). The final files contain the iteration history, final program, required outputs, and this reflection.

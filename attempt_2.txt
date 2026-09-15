@@ -1,0 +1,356 @@
+ATTEMPT 2
+
+PROMPT:
+
+I am building a Python solitaire program for a coding assessment.
+
+I previously generated a first version, tested it with seed 6, and found that it printed "lose" in lowercase and that I needed to verify the game logic and exact output formatting more carefully.
+
+Please create a revised version of the program based strictly on these requirements.
+
+There are 32 cards represented by integers 0 to 31.
+
+Card suits:
+- 0 to 7 = Hearts
+- 8 to 15 = Diamonds
+- 16 to 23 = Clubs
+- 24 to 31 = Spades
+
+Within each suit, the cards go from Seven to Ace.
+
+Examples:
+- 6 = King of Hearts
+- 26 = Nine of Spades
+
+Create the deck exactly as:
+
+cards = list(range(32))
+
+The user provides an integer seed. Use Python's random module to seed and shuffle the deck.
+
+Deal the top 4 cards face-up into these table positions:
+
+1 2
+3 4
+
+Then repeatedly apply these rules:
+
+1. Look at the four cards on the table.
+2. If exactly two cards share a suit, remove those two cards.
+3. If exactly three cards share a suit, remove the two cards in the lower-numbered table positions.
+4. If there are two pairs of matching suits, remove all four cards.
+5. If all four cards have the same suit, remove all four cards.
+6. Refill empty table positions from the top of the remaining deck.
+7. Always refill the lowest-numbered empty position first.
+8. Continue until the game ends.
+
+The game is won if the deck runs out of cards.
+
+The game is lost if all four suits are represented on the table while there are still cards remaining in the deck.
+
+Part 1 requirements:
+
+- The program should be run with Python.
+- Ask for the seed using exactly this prompt:
+
+Enter an integer to pass to the seed() function: 
+
+- Play the complete game.
+- Display the game round by round.
+- End with a clear WIN or LOSE message.
+- Follow these formatting requirements:
+  - no tabs
+  - no trailing spaces
+  - a blank line before each new round
+  - four spaces before each group of 4 cards
+  - one space between cards
+  - at most 6 groups of 4 cards per line
+
+Part 2 requirements:
+
+Create:
+
+simulate(n, i)
+
+It must play n games using seeds:
+
+i, i+1, i+2, ..., i+n-1
+
+For every game, record how many cards were left undealt when the game ended.
+
+Print a percentage table showing the percentage of games that ended with each number of cards left.
+
+Requirements:
+- exactly two decimal places
+- only percentages greater than zero
+- sorted by number of cards left from smallest to largest
+- no tabs
+- no trailing spaces
+
+The code must support these required examples:
+- simulate(20, 0)
+- simulate(300, 7)
+- a full game using seed 6
+- a full game using seed 3
+- a full game using seed 30
+
+Please make the code beginner-readable and explain the important changes from the first version.
+
+Pay particular attention to:
+- the order in which cards are removed and refilled
+- detecting the win/lose condition at the correct time
+- correctly handling two matching pairs
+- correctly handling three cards of the same suit
+- exact output formatting
+- using uppercase WIN and LOSE
+
+Do not assume the first version was correct. Review the rules carefully before writing the revised code.
+
+AI CODE:
+
+"""
+Solitaire Game for Coding Assessment
+
+Key Implementation Details:
+1. Cards 0-31 represent Seven through Ace in four suits
+2. Deck is shuffled using random.seed() and random.shuffle()
+3. Game rules apply in order: check suits, remove cards, refill from deck
+4. WIN condition: deck is empty (all 32 cards successfully removed)
+5. LOSE condition: all 4 suits present on table with cards still in deck
+"""
+
+import random
+
+
+def get_suit(card):
+    """
+    Return the suit of a card as an integer.
+    0 = Hearts, 1 = Diamonds, 2 = Clubs, 3 = Spades
+    """
+    return card // 8
+
+
+def card_to_string(card):
+    """Convert card number to readable format (e.g., '7H', 'AS')"""
+    suits = ['H', 'D', 'C', 'S']
+    ranks = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    
+    suit_index = card // 8
+    rank_index = card % 8
+    
+    return ranks[rank_index] + suits[suit_index]
+
+
+def format_cards(cards):
+    """Format a list of cards for display with proper spacing"""
+    return ' '.join(card_to_string(card) for card in cards)
+
+
+def print_round(round_num, table, deck):
+    """Print the current round with proper formatting"""
+    print()
+    print(f"Round {round_num}")
+    
+    # Format table cards
+    table_str = format_cards(table)
+    
+    # Format remaining deck in groups of 4, max 6 groups per line
+    deck_groups = []
+    for i in range(0, len(deck), 4):
+        group = deck[i:i+4]
+        deck_groups.append(format_cards(group))
+    
+    # Print table
+    print(f"    {table_str}")
+    
+    # Print deck in lines of at most 6 groups
+    if deck_groups:
+        for line_start in range(0, len(deck_groups), 6):
+            line_groups = deck_groups[line_start:line_start+6]
+            print(f"    {' '.join(line_groups)}")
+
+
+def check_lose_condition(table, deck):
+    """
+    Check if game is lost: all 4 suits present on table with cards in deck
+    """
+    if len(deck) == 0:
+        return False
+    
+    suits_on_table = set(get_suit(card) for card in table)
+    return len(suits_on_table) == 4
+
+
+def remove_cards(table, deck):
+    """
+    Apply game rules to remove cards from table.
+    Returns True if cards were removed, False otherwise.
+    """
+    # Count cards by suit
+    suit_counts = {}
+    for i, card in enumerate(table):
+        suit = get_suit(card)
+        if suit not in suit_counts:
+            suit_counts[suit] = []
+        suit_counts[suit].append(i)
+    
+    # Rule: If all four cards have the same suit, remove all four
+    if len(suit_counts) == 1:
+        table.clear()
+        return True
+    
+    # Rule: If there are two pairs of matching suits, remove all four
+    if len(suit_counts) == 2:
+        counts = [len(positions) for positions in suit_counts.values()]
+        if sorted(counts) == [2, 2]:
+            table.clear()
+            return True
+    
+    # Rule: If exactly three cards share a suit, remove the two in lower positions
+    for suit, positions in suit_counts.items():
+        if len(positions) == 3:
+            # Remove the two lowest-numbered positions
+            positions_to_remove = sorted(positions)[:2]
+            # Remove in reverse order to maintain indices
+            for pos in sorted(positions_to_remove, reverse=True):
+                table.pop(pos)
+            return True
+    
+    # Rule: If exactly two cards share a suit, remove those two
+    for suit, positions in suit_counts.items():
+        if len(positions) == 2:
+            # Remove in reverse order to maintain indices
+            for pos in sorted(positions, reverse=True):
+                table.pop(pos)
+            return True
+    
+    return False
+
+
+def refill_table(table, deck):
+    """
+    Refill empty positions on table from deck.
+    Always refill lowest-numbered position first.
+    Table should have 4 positions (0, 1, 2, 3).
+    """
+    while len(table) < 4 and len(deck) > 0:
+        table.append(deck.pop(0))
+
+
+def play_game(seed, display=True):
+    """
+    Play a complete game of solitaire.
+    
+    Args:
+        seed: Random seed for shuffling
+        display: Whether to display the game rounds
+    
+    Returns:
+        Number of cards left undealt when game ended
+    """
+    # Create and shuffle deck
+    cards = list(range(32))
+    random.seed(seed)
+    random.shuffle(cards)
+    
+    # Deal initial 4 cards to table
+    table = [cards.pop(0) for _ in range(4)]
+    deck = cards
+    
+    round_num = 1
+    
+    if display:
+        print_round(round_num, table, deck)
+    
+    # Main game loop
+    while True:
+        # Check lose condition
+        if check_lose_condition(table, deck):
+            if display:
+                print()
+                print("LOSE")
+            return len(deck)
+        
+        # Try to remove cards
+        cards_removed = remove_cards(table, deck)
+        
+        if cards_removed:
+            # Refill table
+            refill_table(table, deck)
+            round_num += 1
+            
+            if display:
+                print_round(round_num, table, deck)
+            
+            # Check if we've won (deck empty)
+            if len(deck) == 0:
+                if display:
+                    print()
+                    print("WIN")
+                return 0
+        else:
+            # No cards removed and not a lose condition means something is wrong
+            # This shouldn't happen with correct logic, but check for stalemate
+            if check_lose_condition(table, deck):
+                if display:
+                    print()
+                    print("LOSE")
+                return len(deck)
+            else:
+                # No moves available but not all suits present - shouldn't happen
+                # Game is stuck, treat as lose
+                if display:
+                    print()
+                    print("LOSE")
+                return len(deck)
+
+
+def simulate(n, i):
+    """
+    Simulate n games using seeds i, i+1, ..., i+n-1
+    Print percentage table of cards left undealt
+    """
+    cards_left_counts = {}
+    
+    # Play n games
+    for seed in range(i, i + n):
+        cards_left = play_game(seed, display=False)
+        cards_left_counts[cards_left] = cards_left_counts.get(cards_left, 0) + 1
+    
+    # Print results
+    print()
+    print(f"Simulating {n} games using seeds {i} to {i+n-1}:")
+    print()
+    
+    # Sort by number of cards left
+    for cards_left in sorted(cards_left_counts.keys()):
+        count = cards_left_counts[cards_left]
+        percentage = (count / n) * 100
+        print(f"{cards_left} cards left: {percentage:.2f}%")
+
+
+def main():
+    """Main program entry point"""
+    seed_input = input("Enter an integer to pass to the seed() function: ")
+    seed = int(seed_input)
+    play_game(seed, display=True)
+
+
+if __name__ == "__main__":
+    main()
+
+
+OUTPUT:
+
+Enter an integer to pass to the seed() function: 6
+
+Round 1
+    9H 7C QS 8D
+    10C AH AS 8S JD 10H 10S JC 8C AC KD QD KH KC JS 9S 9D 10D KS 9C QC JH 7H 8H
+    7D 7S AD QH
+
+LOSE
+
+WHAT I FOUND:
+
+The revised program now prints WIN or LOSE in uppercase and shows the round number. However, when I tested seed 6, it still did not appear to follow the required round-by-round output format correctly. It printed all of the remaining deck cards on the same round instead of clearly showing the table after each round. I also need to check whether the game logic and exact formatting match the assignment examples.

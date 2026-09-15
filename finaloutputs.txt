@@ -1,0 +1,125 @@
+FINAL OUTPUTS
+
+Example 1: Seed 6
+Enter an integer to pass to the seed() function: 6
+
+    Nine of Hearts Seven of Clubs
+    Queen of Spades Eight of Diamonds
+
+LOSE
+
+Example 2: Seed 3
+Enter an integer to pass to the seed() function: 3
+
+    Eight of Diamonds Seven of Spades
+    King of Diamonds Nine of Diamonds
+
+    Jack of Spades Seven of Spades
+    Eight of Hearts Nine of Diamonds
+
+    Queen of Hearts Ten of Hearts
+    Eight of Hearts Nine of Diamonds
+
+    King of Clubs Queen of Clubs
+    Eight of Hearts Nine of Diamonds
+
+    Queen of Diamonds Jack of Diamonds
+    Eight of Hearts Nine of Diamonds
+
+    Ace of Clubs Seven of Clubs
+    Eight of Hearts Nine of Diamonds
+
+    Ten of Spades King of Hearts
+    Eight of Hearts Nine of Diamonds
+
+    Ten of Spades Ace of Hearts
+    Queen of Spades Nine of Diamonds
+
+    Seven of Diamonds Ace of Hearts
+    Eight of Spades Nine of Diamonds
+
+    Seven of Hearts Ace of Hearts
+    Eight of Spades Nine of Spades
+
+    Nine of Hearts King of Spades
+    Jack of Clubs Ace of Spades
+
+    Nine of Hearts Ten of Clubs
+    Jack of Clubs Ten of Diamonds
+
+    Nine of Hearts Jack of Hearts
+    Eight of Clubs Ten of Diamonds
+
+WIN
+
+Example 3: Seed 30
+Enter an integer to pass to the seed() function: 30
+
+    Ten of Diamonds Nine of Diamonds
+    Jack of Spades Queen of Clubs
+
+    Ace of Diamonds Eight of Clubs
+    Jack of Spades Queen of Clubs
+
+    Ace of Diamonds Ten of Hearts
+    Jack of Spades Queen of Diamonds
+
+    Queen of Hearts Ten of Hearts
+    Jack of Spades Eight of Spades
+
+    Seven of Spades Eight of Diamonds
+    Ace of Spades Ace of Clubs
+
+    Seven of Clubs Eight of Diamonds
+    Ace of Hearts Ace of Clubs
+
+    Queen of Spades Eight of Diamonds
+    Ace of Hearts King of Diamonds
+
+    Queen of Spades Nine of Hearts
+    Ace of Hearts Jack of Hearts
+
+    Queen of Spades Ten of Spades
+    King of Clubs Jack of Hearts
+
+    Jack of Diamonds Eight of Hearts
+    King of Clubs Jack of Hearts
+
+    Jack of Diamonds Seven of Diamonds
+    King of Clubs King of Hearts
+
+    Nine of Spades Jack of Clubs
+    King of Clubs King of Hearts
+
+    Nine of Spades King of Spades
+    Seven of Hearts King of Hearts
+
+WIN
+
+Example 4: simulate(20, 0)
+0 cards left: 20.00%
+6 cards left: 10.00%
+8 cards left: 5.00%
+10 cards left: 15.00%
+12 cards left: 5.00%
+18 cards left: 10.00%
+22 cards left: 5.00%
+24 cards left: 10.00%
+26 cards left: 10.00%
+28 cards left: 10.00%
+
+Example 5: simulate(300, 7)
+0 cards left: 19.67%
+4 cards left: 1.67%
+6 cards left: 2.67%
+8 cards left: 4.00%
+10 cards left: 2.67%
+12 cards left: 7.33%
+14 cards left: 3.33%
+16 cards left: 6.67%
+18 cards left: 6.67%
+20 cards left: 7.67%
+22 cards left: 7.00%
+24 cards left: 13.00%
+26 cards left: 7.00%
+28 cards left: 10.67%
